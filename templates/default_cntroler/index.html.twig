@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello DefaultCntrolerController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Pasos</th>
+            <th scope="col">Fecha</th>
+          </tr>
+        </thead>
+        <tbody>
+
+    {% for animal in animales %}
+    <tr>
+        <th scope="row">{{ loop.index }}</th>
+        <td>{{ animal.nombre }}</td>
+        <td>{{ animal.pasos|number_format(2, ',', '.') }}</td>
+        {# <td>{{ animal.nacimiento|date("m/d/Y") }}</td> #}
+        <td>{{ animal.nacimiento|format_datetime('long','short', locale='zd') }}</td>
+        <td>{{ animal.pasos|format_currency('EUR', locale='de') }}</td>
+        <td>{{ animal.pasos|format_currency('EUR') }}</td>
+        <td>
+          <button type="button" class="btn btn-primary">VER</button>
+          <button type="button" class="btn btn-danger">Eliminar</button>
+        </td>
+      </tr>
+    
+
+    {% else %}
+    No users have been found.
+    {% endfor %}
+
+    
+</div>
+</tbody>
+</table>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nombre</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+
+{% for sitio in sitios %}
+<tr>
+  <th scope="row">{{ loop.index }}</th>
+  <td>{{ sitio.nombre }}</td>
+  
+</tr>
+
+
+{% else %}
+No users have been found.
+{% endfor %}
+
+
+</div>
+</tbody>
+</table>
+{% endblock %}
