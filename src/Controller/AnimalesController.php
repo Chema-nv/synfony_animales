@@ -39,15 +39,27 @@ class AnimalesController extends AbstractController
         return new Response ("soy un raton");
     }*/
 
-    
+
     /*#[Route('/animales/borrar/{animal}', name: 'app_animales_borrar')]
+    public function borrar(EntityManagerInterface $entityManager, Animal $animal):Response
+    {
+        $entityManager->remove($animal);
+        $entityManager->flush();
+
+        return new RedirectResponse(
+            $this->generateUrl('app_animales')
+        );
+    }*/
+
+    #[Route('/animales/borrar/{animal}', name: 'app_animales_borrar')]
     public function borrar(EntityManagerInterface $entityManager,Animal $animal): Response
     {
        $entityManager->remove($animal);
        $entityManager->flush();
 
-       retunrn new RedirectResponse(
-        $this->generateUrl('')    
-    );
-    }*/
+       return new RedirectResponse(
+        $this->generateUrl('app_animales')
+      );
+ 
+    }
 }

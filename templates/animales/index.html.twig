@@ -5,87 +5,125 @@
 {% block body %}
 {{parent()}}
 <style>
-    .example-wrapper {
-        margin: 1em auto;
-        max-width: 800px;
-        width: 95%;
-        font: 18px/1.5 sans-serif;
-    }
+  .example-wrapper {
+    margin: 1em auto;
+    max-width: 800px;
+    width: 95%;
+    font: 18px/1.5 sans-serif;
+  }
 
-    .example-wrapper code {
-        background: #F5F5F5;
-        padding: 2px 6px;
-    }
+  .example-wrapper code {
+    background: #F5F5F5;
+    padding: 2px 6px;
+  }
 </style>
 
 <div class="example-wrapper">
   {%dump(animales)%}
-  
 
-    <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Pasos</th>
-            <th scope="col">Fecha</th>
-          </tr>
-        </thead>
-        <tbody>
 
-    {% for animal in animales %}
-    <tr>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Pasos</th>
+        <th scope="col">Fecha</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      {% for animal in animales %}
+      <tr>
         <th scope="row">{{ loop.index }}</th>
         <td>{{ animal.nombre }}</td>
         <td>{{ animal.pasos|number_format(2, ',', '.') }}</td>
         {# <td>{{ animal.nacimiento|date("m/d/Y") }}</td> #}
         <td>{{ animal.nacimiento|format_datetime('long','short', locale='zd') }}</td>
-        <td>{{ animal.pasos|format_currency('EUR', locale='de') }}</td>
-        <td>{{ animal.pasos|format_currency('EUR') }}</td>
+
+
         <td>
           <button type="button" class="btn btn-primary">VER</button>
-          <button type="button" class="btn btn-danger">Eliminar</button>
+          <button type="button" class="btn btn-danger " data-bs-toggle="modal" data-bs-target="#exampleModal"
+            data-bs-id="{{animal.id}}" data-bs-name="{{animal.nombre}}">Eliminar</button>
         </td>
       </tr>
-    
 
-    {% else %}
-    No users have been found.
-    {% endfor %}
 
-    
+      {% else %}
+      No users have been found.
+      {% endfor %}
+    </tbody>
+  </table>
+
 </div>
-</tbody>
-</table>
 
-{# <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Nombre</th>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar animal</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>¿Deseas elimimar el animal selecionado: <strong id="recipient-name"></strong>?</p>
+        
+      </div>
+      <div class="modal-footer">
+        <a id="trigger" href="" type="button" class="btn btn-primary">Eliminar</a>
+        {# <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button> #}
+      </div>
       
-    </tr>
-  </thead>
-  <tbody>
-
-{% for sitio in sitios %}
-<tr>
-  <th scope="row">{{ loop.index }}</th>
-  <td>{{ sitio.nombre }}</td>
-  
-</tr>
-
-
-{% else %}
-No users have been found.
-{% endfor %}
-
-
+    </div>
+  </div>
 </div>
-</tbody>
-</table> #}
 {% endblock %}
 
+{% block javascripts %}
 
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const exampleModal = document.getElementById('exampleModal')
+        exampleModal.addEventListener('show.bs.modal', event => {
+            // Button that triggered the modal
+            const button = event.relatedTarget
+            // Extract info from data-bs-* attributes
+            const recipient = button.getAttribute('data-bs-name');
+            const trigger = document.querySelector('#trigger');
+            const idTrigger = button.getAttribute('data-bs-id');
+            // If necessary, you could initiate an AJAX request here
+            // and then do the updating in a callback.
+            //
+            // Update the modal's content.
+            // const modalTitle = exampleModal.querySelector('.modal-title')
+            const modalBodyInput = exampleModal.querySelector('#recipient-name')
+            // modalTitle.textContent = `Eliminar el animal ${recipient}`
+            modalBodyInput.innerHTML = recipient
+            trigger.setAttribute('href', `/animales/borrar/${idTrigger}`);
+        })
+    });
+  </script>
+
+
+<script> 
+/*    document.addEventListener("DOMContentLoaded", () => {​​
 
    
+  exampleModal.addEventListener('show.bs.modal', event => {
+    
+    const button = event.relatedTarget
+    
+    const recipient = button.getAttribute('data-bs-nombre')
+    
+    const modalTitle = exampleModal.querySelector('.modal-title')
+    const modalBodyInput = exampleModal.querySelector('#recipient-nombre')
+
+    modalTitle.textContent = `Eliminar el animal ${recipient}`
+    modalBodyInput.innerHTML = recipient
+  })
+
+}​​);*/
+</script>
+{% endblock %}
