@@ -19,8 +19,19 @@
 </style>
 
 <div class="example-wrapper">
-  {%dump(animales)%}
-
+  {# {%dump(animales)%} #}
+  <div class="row">
+    <div class="col">
+      Column
+    </div>
+    <div class="col">
+      Column
+    </div>
+    <div class="col">
+      Column
+    </div>
+  </div>
+</div>
 
   <table class="table">
     <thead>
@@ -43,7 +54,7 @@
 
 
         <td>
-          <button type="button" class="btn btn-primary">VER</button>
+          <a href="animales/editar/{{animal.id}}" type="button" class="btn btn-primary">VER</a>
           <button type="button" class="btn btn-danger " data-bs-toggle="modal" data-bs-target="#exampleModal"
             data-bs-id="{{animal.id}}" data-bs-name="{{animal.nombre}}">Eliminar</button>
         </td>
@@ -51,7 +62,10 @@
 
 
       {% else %}
-      No users have been found.
+      <tr>
+        <td colspan="5">No se han encontrado animales</td>
+      </tr>
+      
       {% endfor %}
     </tbody>
   </table>
